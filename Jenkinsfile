@@ -1,61 +1,99 @@
 pipeline {
+    options {
+        buildDiscarder(logRotator(numToKeepStr: ‘7‘, artifactNumToKeepStr: ‘10‘, daysToKeepStr: ‘5‘))
+        timeout(time: 12, unit: ‘MINUTES‘)
+        disableConcurrentBuilds()
+    }
     agent {
-        docker {
-            image 'maven:3.6.0-jdk-8'
-            args '-v /root/.m2:/root/.m2'
-        }
+        label ‘master‘
     }
 
     environment {
-        DOCKER_REPOSITORY_HOST = 'wx.ankoninc.com.cn'
-        ACTIVED_PROFILE = 'dev'
-        NETWORK = 'servicenet'
-	GIT_REPOSITORY = 'https://github.com/tomcat-ll/lizi.git'
+        JOB_NAME = ‘pipeline-demo‘
     }
+
+    parameters {
+            booleanParam(name: ‘FAST_MODE‘, defaultValue: false, description: ‘此操作将会跳过单元测试以及代码质量检查。‘)
+    }
+
     stages {
+        stage(‘pipeline环境准备‘) {
 
-        stage('merge code') {
-	    steps {
-                sh '''git checkout dev
-                      git merge master'''
-            }
-	}
-
-        stage('Maven install') {
-            steps {
-                sh 'mvn install'
-            }
-        }
-
-        stage('Sonar') {
-            steps {
-                sh 'mvn sonar:sonar'
-            }
-        }
-
-	stage('push code to branch dev') {
-	    steps {
-		withCredentials([usernamePassword(credentialsId: 'config-user', usernameVariable: 'username', passwordVariable: 'password')]){
-                    sh "git push https://$username:$password@${GIT_REPOSITORY}"
-                }
-            }
-	}
-
-        stage('Deploy cloud-app-service-server') {
             steps {
                 script {
-                    env.WORKSPACE_PATH = "./cloud-app-service-server"
-                    def pom = readMavenPom file: "${WORKSPACE_PATH}/pom.xml"
-                    env.PROJECT_NAME = pom.artifactId
-                    env.JAR_FILE_PATH = "./target/${PROJECT_NAME}-${pom.version}.jar"
-                    env.PORT = pom.properties.ankonAppPort
-                    env.IMAGE = "${DOCKER_REPOSITORY_HOST}/${PROJECT_NAME}:${pom.version}-${ACTIVED_PROFILE}-${BUILD_TIMESTAMP}"
+                    echo "开始构建"
+                    if(!env.BRANCH_NAME.startsWith(‘feature-‘) && !env.BRANCH_NAME.startsWith(‘release-‘)){
+                        error("自动构建分支名称必须以feature-或release-开头，当前分支名称为: ${env.BRANCH_NAME}")
+                    }
+
+                    if (env.BRANCH_NAME.startsWith(‘feature-‘) ) {
+                        env.env = "beta"
+                    }
+                    if (env.BRANCH_NAME.startsWith(‘release-‘)) {
+                        env.env = "stage"
+                    }
+
+                    sh "echo 当前分支 : ${env.BRANCH_NAME}"
+                    sh "echo 当前环境 : ${env.env}"
+                    sh "echo 当前提交 : ${env.commit}"
+                    sh "echo WORKSPACE : ${env.WORKSPACE}"
+                    sh "echo GIT_BRANCH : ${env.GIT_BRANCH}"
+                    sh "echo BUILD_NUMBER : ${env.BUILD_NUMBER}"
+                    sh "echo JOB_NAME : ${env.JOB_NAME}"
+                    sh "./mvnw -v"
+                    sh "java -version"
                 }
-                sh "docker build --build-arg JAR_FILE_PATH=${JAR_FILE_PATH} --build-arg PORT=${PORT} -t ${IMAGE} ${WORKSPACE_PATH}"
-                sh "docker service rm ${PROJECT_NAME} || true"
-                sh "docker push ${IMAGE}"
-                sh "docker service create   --name ${PROJECT_NAME} --limit-memory 500M  --with-registry-auth --replicas 1   --publish published=${PORT},target=${PORT}   --network ${NETWORK}    ${IMAGE} --spring.profiles.active=${ACTIVED_PROFILE}"
+            }
+        }
+
+        stage("运行测试&收集报告"){
+            when{
+                expression {
+                    params.FAST_MODE == false
+                }
+            }
+           steps{
+                script {
+                    echo "开始运行测试"
+                    sh "./mvnw clean test jacoco:report"
+                }
+           }
+        }
+
+        stage(‘代码静态检查‘) {
+            when{
+                expression {
+                    params.FAST_MODE == false
+                }
+            }
+            steps {
+                withSonarQubeEnv( installationName: ‘sonar_server‘) {
+                    sh ‘./mvnw sonar:sonar‘
+                }
+            }
+        }
+
+        stage("检查结果分析") {
+            when{
+                expression {
+                    params.FAST_MODE == false
+                }
+            }
+            steps {
+                timeout(time: 1, unit: ‘HOURS‘) {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+
+        stage("发布应用") {
+            steps {
+                script {
+                    echo "开始发布"
+                    sh "curl --location --request POST ‘http:/192.168.5.101:8080/job/${env.JOB_NAME}/buildWithParameters‘                         --header ‘Authorization: ${env.ecarx_jenkins_auth}‘                         --form ‘env=${env.env}‘                         --form ‘branchname=origin/${env.BRANCH_NAME}‘"
+                }
             }
         }
     }
-    }
+}
