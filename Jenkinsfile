@@ -1,20 +1,5 @@
 pipeline {
-    options {
-        buildDiscarder(logRotator(numToKeepStr: ‘7‘, artifactNumToKeepStr: ‘10‘, daysToKeepStr: ‘5‘))
-        timeout(time: 12, unit: ‘MINUTES‘)
-        disableConcurrentBuilds()
-    }
-    agent {
-        label ‘master‘
-    }
-
-    environment {
-        JOB_NAME = ‘pipeline-demo‘
-    }
-
-    parameters {
-            booleanParam(name: ‘FAST_MODE‘, defaultValue: false, description: ‘此操作将会跳过单元测试以及代码质量检查。‘)
-    }
+    agent any
 
     stages {
         stage(‘pipeline环境准备‘) {
@@ -90,7 +75,7 @@ pipeline {
         stage("发布应用") {
             steps {
                 script {
-                    echo "开始发布"
+                     echo "开始发布"
                      sh "curl --location --request POST 'http://192.168.5.101:8080/job/${env.JOB_NAME}/buildWithParameters' \
                                             --header 'Authorization: ${env.ecarx_jenkins_auth}' \
                                             --form 'env=${env.env}' \
