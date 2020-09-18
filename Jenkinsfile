@@ -91,10 +91,10 @@ pipeline {
             steps {
                 script {
                     echo "开始发布"
-                    sh "curl --location --request POST ‘http://192.168.5.101:80/${env.JOB_NAME}/buildWithParameters‘\
-                    --header ‘Authorization: ${env.ecarx_jenkins_auth}‘\
-                    --form ‘env=${env.env}‘\
-                    --form ‘branchname=origin/${env.BRANCH_NAME}‘"
+                     sh "curl --location --request POST 'http://0.0.0.0:8080/job/${env.JOB_NAME}/buildWithParameters' \
+                                            --header 'Authorization: ${env.ecarx_jenkins_auth}' \
+                                            --form 'env=${env.env}' \
+                                            --form 'branchname=origin/${env.BRANCH_NAME}'"
                 }
             }
         }
