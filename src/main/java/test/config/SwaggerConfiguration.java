@@ -1,3 +1,4 @@
+/*
 package test.config;
 
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
@@ -18,11 +19,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwaggerBootstrapUI
 public class SwaggerConfiguration {
 
-    /**
+    */
+/**
      * API 信息定义
      *
      * @return
-     */
+     *//*
+
     @Bean(value = "defaultApi")
     @Order(value = 0)
     public Docket defaultApi() {
@@ -34,7 +37,9 @@ public class SwaggerConfiguration {
                 .apis(RequestHandlerSelectors.basePackage("test.controller"))
                 .paths(PathSelectors.any())
                 .build();
-        /*.securityContexts(Lists.newArrayList(securityContext(),securityContext1())).securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey(),apiKey1()));*/
+        */
+/*.securityContexts(Lists.newArrayList(securityContext(),securityContext1())).securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey(),apiKey1()));*//*
+
     }
 
     private ApiInfo apiInfo() {
@@ -47,3 +52,4 @@ public class SwaggerConfiguration {
                 .build();
     }
 }
+*/
