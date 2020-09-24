@@ -18,6 +18,16 @@ pipeline {
                           sh "mvn  clean package dockerfile:build"
                           echo "上传镜像"
                           sh "docker tag lizi:latest 192.168.5.101:85/library/lizi:latest "
+                          echo "镜像推送harbor"
+                          def harbor_auth="6d69019c-b8e6-49a8-8563-1f81f9da8050"
+                          withCredentials([usernamePassword(credentialsId: "${harbor_auth}", passwordVariable: 'password', usernameVariable: 'username')]) {
+                              // some block
+                              //登录harbor
+                              sh " docker login -u ${username} -p ${password} 192.168.5.101:85  "
+                              //镜像上传
+                              sh "docker push 192.168.5.101:85/library/lizi:latest"
+                              sh  "echo 镜像上传成功"
+                          }
 }
                        }
 }
