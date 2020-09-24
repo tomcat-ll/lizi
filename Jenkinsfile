@@ -15,7 +15,7 @@ pipeline {
          stage(‘pipeline编译打包‘) {
          steps{
                           echo "开始编译打包"
-                          sh "mvn  clean package"
+                          sh "mvn  clean package dockerfile:build"
 }
                        }
 }
