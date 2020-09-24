@@ -19,8 +19,8 @@ pipeline {
                           echo "上传镜像"
                           sh "docker tag lizi:latest 192.168.5.101:85/library/lizi:latest "
                           echo "镜像推送harbor"
-                          def harbor_auth="6d69019c-b8e6-49a8-8563-1f81f9da8050"
-                          withCredentials([usernamePassword(credentialsId: "${harbor_auth}", passwordVariable: 'password', usernameVariable: 'username')]) {
+                          //def harbor_auth="6d69019c-b8e6-49a8-8563-1f81f9da8050"
+                          withCredentials([usernamePassword(credentialsId: '6d69019c-b8e6-49a8-8563-1f81f9da8050', passwordVariable: 'password', usernameVariable: 'username')]) {
                               // some block
                               //登录harbor
                               sh " docker login -u ${username} -p ${password} 192.168.5.101:85  "
