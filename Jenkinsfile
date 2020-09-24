@@ -16,6 +16,8 @@ pipeline {
          steps{
                           echo "开始编译打包"
                           sh "mvn  clean package dockerfile:build"
+                          echo "上传镜像"
+                          sh "docker tag lizi:latest 192.168.5.101:85/library/lizi:latest "
 }
                        }
 }
