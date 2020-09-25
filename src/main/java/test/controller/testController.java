@@ -19,7 +19,7 @@ import test.domain.test;
 public class testController {
     @GetMapping(value = "/hi")
     public String getHi(){
-        return "hi----"+"lilililililijijijiji";
+        return "hi----"+"lilililililijijijiji-------------qqqqqqqqqqqqqqqqqqqqqqqq";
     }
 
 }
