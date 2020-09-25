@@ -4,7 +4,7 @@ pipeline {
         stage(‘pipeline开始拉取‘) {
         steps{
                   echo "开始拉取"
-                 checkout([$class: 'GitSCM', branches: [[name: '*/'+env.BRANCH_NAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '2938767e-a4c5-43e7-928c-cee7103b3121', url: 'https://github.com/tomcat-ll/lizi.git']]])
+                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '2938767e-a4c5-43e7-928c-cee7103b3121', url: 'https://github.com/tomcat-ll/lizi.git']]])
 
         }
         }
