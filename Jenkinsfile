@@ -29,10 +29,13 @@ pipeline {
                               sh  "echo 镜像上传成功"
                           }
                           //部署
-
+if(env.BRANCH_NAME == 'master'){
 sshPublisher(publishers: [sshPublisherDesc(configName: '103_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh  192.168.5.101:85 library lizi latest 10000", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 sshPublisher(publishers: [sshPublisherDesc(configName: 'lilei-test', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh  192.168.5.101:85 library lizi latest 10000", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-
+}
+else{
+sshPublisher(publishers: [sshPublisherDesc(configName: 'lilei-test', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh  192.168.5.101:85 library lizi latest 10000", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+}
 
 }
                        }
