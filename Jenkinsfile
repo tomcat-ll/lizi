@@ -5,12 +5,12 @@ pipeline {
         steps{
                   echo "开始拉取"
                   if (env.BRANCH_NAME == 'devlop') {
-                  step{
+                  echo "测试分支拉取"
                  checkout([$class: 'GitSCM', branches: [[name: '*/devlop']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '2938767e-a4c5-43e7-928c-cee7103b3121', url: 'https://github.com/tomcat-ll/lizi.git']]])
-                } } else {
-                step{
+                 } else {
+                 echo "主分支拉取"
                  checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '2938767e-a4c5-43e7-928c-cee7103b3121', url: 'https://github.com/tomcat-ll/lizi.git']]])
-                } }
+                 }
         }
         }
          //stage(‘编译安装，子工程‘) {
