@@ -2,18 +2,15 @@ pipeline {
     agent any
     stages {
         stage(‘pipeline开始拉取‘) {
-         if (env.BRANCH_NAME  == 'devlop') {
         steps{
                   echo "开始拉取"
-
+                  if (env.BRANCH_NAME == 'devlop') {
+                  step{
                  checkout([$class: 'GitSCM', branches: [[name: '*/devlop']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '2938767e-a4c5-43e7-928c-cee7103b3121', url: 'https://github.com/tomcat-ll/lizi.git']]])
-                 }
-                 }
-        else {
-        steps{
-                 echo "开始拉取"
+                } } else {
+                step{
                  checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '2938767e-a4c5-43e7-928c-cee7103b3121', url: 'https://github.com/tomcat-ll/lizi.git']]])
-                 }
+                } }
         }
         }
          //stage(‘编译安装，子工程‘) {
