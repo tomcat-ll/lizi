@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     stages {
         stage(‘pipeline开始拉取‘) {
         steps{
