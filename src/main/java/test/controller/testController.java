@@ -1,11 +1,10 @@
 package test.controller;
 
 
-import com.google.gson.Gson;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import test.domain.test;
+
 
 
 /**
@@ -19,7 +18,7 @@ import test.domain.test;
 public class testController {
     @GetMapping(value = "/hi")
     public String getHi(){
-        return "hi----"+"lilililililijijijiji-------------qqqqqqqqqqqqqqqqqqqqqqqq";
+        return "hi----"+"li+v.1.1.0";
     }
 
 }
