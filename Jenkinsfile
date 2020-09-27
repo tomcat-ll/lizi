@@ -1,11 +1,13 @@
 pipeline {
     agent any
+    environment{
     //项目名
-    def  project_name="lizi"
+     project_name='lizi'
     //仓库地址
-    def github="https://github.com/tomcat-ll/lizi.git"
+     github='https://github.com/tomcat-ll/lizi.git'
     //jenkins远程服务器
-    def server_name="103_server"
+     server_name='103_server'
+    sever_port = '10001'}
     stages {
         stage(‘pipeline开始拉取‘) {
         steps{
@@ -35,8 +37,8 @@ pipeline {
                           }
                           //部署
 
-sshPublisher(publishers: [sshPublisherDesc(configName: "${server_name}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh  192.168.5.101:85 library '$project_name' latest 10000", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-sshPublisher(publishers: [sshPublisherDesc(configName: 'lilei-test', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh  192.168.5.101:85 library '$project_name' latest 10000", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+sshPublisher(publishers: [sshPublisherDesc(configName: "${server_name}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh  $sever_port $project_name", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+sshPublisher(publishers: [sshPublisherDesc(configName: 'lilei-test', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh  $sever_port $project_name' latest 10000", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 
 
 }
