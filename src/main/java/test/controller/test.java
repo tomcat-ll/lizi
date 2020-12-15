@@ -1,14 +1,17 @@
+/*
 package test.controller;
 
 import java.util.Random;
 
+*/
 /**
  * @ClassName:test
  * @Description:
  * @Author lilei
  * @Date 2020/11/12
  * @Version 1.0
- */
+ *//*
+
 public class test {
     public static void main(String[] args) {
         int a=100;
@@ -39,3 +42,4 @@ public class test {
     }
 
 }
+*/

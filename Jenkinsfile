@@ -7,7 +7,7 @@ pipeline {
      github='https://github.com/tomcat-ll/lizi.git'
     //jenkins远程服务器
      server_name='103_server'
-    sever_port = '10000'}
+    sever_port = '11111'}
     stages {
         stage(‘pipeline开始拉取‘) {
         steps{
