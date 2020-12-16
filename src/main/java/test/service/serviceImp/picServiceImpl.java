@@ -66,7 +66,7 @@ public class picServiceImpl implements picservice {
             return "文件已存在";
         }
         //拼接一个url地址返回 http://image.jt.com/+path+"/"+nName
-        String url="http://192.168.5.102:11111/"+path+"/"+nName;
+        String url="http://127.0.0.1:11111/"+path+"/"+nName;
         return url;//{"error":0,"url":"http://image**"}
 
     }

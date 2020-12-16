@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import test.service.picservice;
 
 
@@ -36,9 +38,14 @@ public class testController {
        @ApiParam(value = "上传图片文件",required = true) MultipartFile pic){
         return p.updateImage(pic);
     }
-    @ApiOperation(value = "获取图片")
-    @GetMapping(value = "/getImage")
-    public String getImage(){
-        return null;
+    @Autowired
+    private JedisPool jedisPool;
+
+    @ApiOperation(value = "测试redis")
+    @GetMapping(value = "/getRedis")
+    public String getRedis(){
+        Jedis jedis = jedisPool.getResource();
+        jedis.setex("name",60,"kkkkk");
+        return jedis.get("addr");
     }
 }
