@@ -6,6 +6,7 @@ package test.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,6 +26,8 @@ import test.service.picservice;
  */
 @RestController
 public class testController {
+    @Value("${test.canshi}")
+    private String test;
     @Autowired
     picservice p;
     @GetMapping(value = "/hi")
@@ -48,4 +51,12 @@ public class testController {
         jedis.setex("name",60,"kkkkk");
         return jedis.get("addr");
     }
+
+    @ApiOperation(value = "测试配置文件")
+    @GetMapping(value = "/test")
+    public String getTest(){
+        return test;
+    }
+
+
 }
