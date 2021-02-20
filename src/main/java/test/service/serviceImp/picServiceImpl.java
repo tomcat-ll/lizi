@@ -68,7 +68,7 @@ public class picServiceImpl implements picservice {
             System.out.println(result);}
         //流输出文件到该目录,创建nName名称图片
         try{
-            pic.transferTo(new File("/usr/local/img/"+nName));
+            pic.transferTo(new File(dir+nName));
         }catch(Exception e){
             e.printStackTrace();
             return "文件已存在";
