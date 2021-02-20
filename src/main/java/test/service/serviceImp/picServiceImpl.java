@@ -1,7 +1,6 @@
 package test.service.serviceImp;
 
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import test.service.picservice;
@@ -18,10 +17,6 @@ import java.util.UUID;
  */
 @Service
 public class picServiceImpl implements picservice {
-    @Value("${imagePath}")
-    private String imagePath;
-    @Value("${imageUrl}")
-    private String imageUrl;
     @Override
     public String updateImage(MultipartFile pic) {
         /*
@@ -56,25 +51,22 @@ public class picServiceImpl implements picservice {
         //调用工具类中一个UploadUtil 创建这个路径
         //nName是文件名称,会根据文件名称创建多级目录,upload是前缀
         String path = getUploadPath(nName, "upload");
-        //1,创建d盘下的d:/img/upload/****
-        //2,运行在linux下 /img/upload/****
-        String dir=imagePath+path+"/";
+        //创建d盘下的img/upload/****
+        String dir="/img/"+path+"/";
         //创建多级目录
         File _dir=new File(dir);//目录文件夹
-        //linux设置写权限windows可以不用
-        _dir.setWritable(true, false);
         if(!_dir.exists()){//说明文件夹不存在
-            Boolean result=_dir.mkdirs();
-            System.out.println(result);}
+            _dir.mkdirs();}
         //流输出文件到该目录,创建nName名称图片
         try{
             pic.transferTo(new File(dir+nName));
         }catch(Exception e){
             e.printStackTrace();
+
             return "文件已存在";
         }
         //拼接一个url地址返回 http://image.jt.com/+path+"/"+nName
-        String url=imageUrl+path+"/"+nName;
+        String url="http://192.168.5.103:10000/"+path+"/"+nName;
         return url;//{"error":0,"url":"http://image**"}
 
     }
