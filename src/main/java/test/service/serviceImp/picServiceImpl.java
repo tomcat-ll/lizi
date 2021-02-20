@@ -1,6 +1,7 @@
 package test.service.serviceImp;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import test.service.picservice;
@@ -17,6 +18,8 @@ import java.util.UUID;
  */
 @Service
 public class picServiceImpl implements picservice {
+    @Value("${imagePath}")
+    private String imagePath;
     @Override
     public String updateImage(MultipartFile pic) {
         /*
@@ -51,8 +54,9 @@ public class picServiceImpl implements picservice {
         //调用工具类中一个UploadUtil 创建这个路径
         //nName是文件名称,会根据文件名称创建多级目录,upload是前缀
         String path = getUploadPath(nName, "upload");
-        //创建d盘下的img/upload/****
-        String dir="/img/"+path+"/";
+        //1,创建d盘下的d:/img/upload/****
+        //2,运行在linux下 /img/upload/****
+        String dir=imagePath+path+"/";
         //创建多级目录
         File _dir=new File(dir);//目录文件夹
         if(!_dir.exists()){//说明文件夹不存在

@@ -49,7 +49,7 @@ public class testController {
     public String getRedis(){
         Jedis jedis = jedisPool.getResource();
         jedis.setex("name",60,"kkkkk");
-        return jedis.get("addr");
+        return jedis.get("name");
     }
 
     @ApiOperation(value = "测试配置文件")
