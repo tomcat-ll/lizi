@@ -61,17 +61,16 @@ public class picServiceImpl implements picservice {
         String dir=imagePath+path+"/";
         //创建多级目录
         File _dir=new File(dir);//目录文件夹
-        System.out.println("文件夹路径"+_dir);
+        //linux设置写权限windows可以不用
+        _dir.setWritable(true, false);
         if(!_dir.exists()){//说明文件夹不存在
-            _dir.mkdirs();
-            System.out.println("创建文件夹路径成功"+_dir);}
+            Boolean result=_dir.mkdirs();
+            System.out.println(result);}
         //流输出文件到该目录,创建nName名称图片
         try{
-            pic.transferTo(new File(dir+nName));
-            System.out.println("上传成功"+dir+nName);
+            pic.transferTo(new File("/usr/local/img/"+nName));
         }catch(Exception e){
             e.printStackTrace();
-            System.out.println(e);
             return "文件已存在";
         }
         //拼接一个url地址返回 http://image.jt.com/+path+"/"+nName
