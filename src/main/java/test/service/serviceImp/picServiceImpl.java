@@ -66,6 +66,7 @@ public class picServiceImpl implements picservice {
         //流输出文件到该目录,创建nName名称图片
         try{
             pic.transferTo(new File(dir+nName));
+            System.out.println("上传成功"+dir+nName);
         }catch(Exception e){
             e.printStackTrace();
 
