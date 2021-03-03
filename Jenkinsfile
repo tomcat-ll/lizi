@@ -22,7 +22,7 @@ pipeline {
          stage(‘pipeline编译打包‘) {
          steps{
                           echo "开始编译打包"
-                          sh "mvn  clean package dockerfile:build"
+                          sh "mvn  clean package docker:build"
                           echo "上传镜像"
                           sh "docker tag ${project_name}:latest 192.168.5.101:85/library/${project_name}:latest "
                           echo "镜像推送harbor"
