@@ -1,6 +1,8 @@
 package test.service.serviceImp;
 
 
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import test.service.picservice;
@@ -17,6 +19,8 @@ import java.util.UUID;
  */
 @Service
 public class picServiceImpl implements picservice {
+    @Value("${imageUrl}")
+    private String imageUrl;
     @Override
     public String updateImage(MultipartFile pic) {
         /*
@@ -59,14 +63,15 @@ public class picServiceImpl implements picservice {
             _dir.mkdirs();}
         //流输出文件到该目录,创建nName名称图片
         try{
-            pic.transferTo(new File(dir+nName));
+            FileUtils.copyInputStreamToFile(pic.getInputStream(), new File(dir+nName));
+            //pic.transferTo(new File(dir+nName));
         }catch(Exception e){
             e.printStackTrace();
 
             return "文件已存在";
         }
         //拼接一个url地址返回 http://image.jt.com/+path+"/"+nName
-        String url="http://192.168.5.103:10000/"+path+"/"+nName;
+        String url=imageUrl+path+"/"+nName;
         return url;//{"error":0,"url":"http://image**"}
 
     }
