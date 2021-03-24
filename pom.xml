@@ -114,12 +114,21 @@
             </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
+                <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <repository>${project.artifactId}</repository>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
+                    <!-- imageName 仓库名称/镜像名称:标签名称-->
+                    <imageName>${docker.image.prefix}/${project.artifactId}:latest</imageName>
+                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <!-- 指定需要复制的根目录，-->
+                            <directory>${project.build.directory}</directory>
+                            <!-- 用于指定需要复制的文件。 表示打包后的jar 文件 -->
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
                 </configuration>
             </plugin>
         </plugins>
