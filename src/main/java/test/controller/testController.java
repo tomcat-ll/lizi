@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import test.service.picservice;
+
+import java.util.logging.Logger;
 
 
 /**
@@ -38,8 +41,10 @@ public class testController {
     @ApiOperation(value = "图片上传")
     @PostMapping(value = "/updateImage")
     public String updateImage(
-       @ApiParam(value = "上传图片文件",required = true) MultipartFile pic){
-        return p.updateImage(pic);
+       @ApiParam(value = "上传图片文件",required = true)@RequestParam() MultipartFile pic){
+        String a =  p.updateImage(pic);
+        Logger.getLogger("updateImage").info("收到消息" + a);
+        return a;
     }
     @Autowired
     private JedisPool jedisPool;

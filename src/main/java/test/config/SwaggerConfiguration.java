@@ -42,7 +42,6 @@ public class SwaggerConfiguration {
                 .title("统计查询文档")
                 .description("RESTful APIs")
                 .termsOfServiceUrl("http://127.0.0.1:8080/")
-                .contact("188140040@qq.com")
                 .version("1.0")
                 .build();
     }
