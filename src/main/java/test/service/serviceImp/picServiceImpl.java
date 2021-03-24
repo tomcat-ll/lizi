@@ -41,8 +41,7 @@ public class picServiceImpl implements picservice {
         //解析后缀合法,原名获取
         String oName=pic.getOriginalFilename();//25363.jpg
         //截取后缀
-        String extName =
-                oName.substring(oName.lastIndexOf("."));
+        String extName = oName.substring(oName.lastIndexOf("."));
         //判断合法,正则
         boolean ok = extName.matches(".(jpg|gif|png)$");
         if(!ok){//非法
@@ -57,6 +56,9 @@ public class picServiceImpl implements picservice {
         String path = getUploadPath(nName, "upload");
         //创建d盘下的img/upload/****
         String dir="/img/"+path+"/";
+        //基于容器部署，容器中的图片地址需挂载到服务器nginx
+
+
         //创建多级目录
         File _dir=new File(dir);//目录文件夹
         if(!_dir.exists()){//说明文件夹不存在
@@ -81,14 +83,13 @@ public class picServiceImpl implements picservice {
         //根据文件名称,生成hash字符串,截取前8位
         //1k2k2k3l5l6k3h4n4h4hn4nu4--1/k/2k/2k/3/l/5/l
         String hash = Integer.toHexString(fileName.hashCode());
-        while(hash.length()<8){
+        while(hash.length()<3){
             hash += "0";
         }
         for (int i = 0; i < hash.length(); i++) {
             upload += "/"+hash.charAt(i);
         }
-
-
         return upload;
     }
+
 }
