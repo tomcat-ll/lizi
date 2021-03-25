@@ -118,7 +118,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
                     <!-- imageName 仓库名称/镜像名称:标签名称-->
-                    <imageName>192.168.2.101:85/library/${project.artifactId}</imageName>
+                    <imageName>${project.artifactId}</imageName>
                     <imageTags>
                         <imageTag>latest</imageTag>
                     </imageTags>
