@@ -116,8 +116,8 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <!-- imageName 仓库名称/镜像名称:标签名称-->
-                    <imageName>${project.artifactId}:latest</imageName>
+                    <!-- imageName 镜像名称:标签名称-->
+                    <imageName>${project.name}:latest</imageName>
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
 
                     <resources>
