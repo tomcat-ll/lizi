@@ -12,6 +12,7 @@
     <groupId>org.example</groupId>
     <artifactId>lizi</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>lizi</name>
 
     <dependencies>
 
@@ -114,21 +115,12 @@
             </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
                 <configuration>
-                    <!-- imageName 镜像名称:标签名称-->
-                    <imageName>${project.name}:latest</imageName>
-                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <!-- 指定需要复制的根目录，-->
-                            <directory>${project.build.directory}</directory>
-                            <!-- 用于指定需要复制的文件。 表示打包后的jar 文件 -->
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
+                    <repository>${project.artifactId}</repository>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>
