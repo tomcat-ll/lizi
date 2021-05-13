@@ -27,16 +27,20 @@ pipeline {
          steps{
                           echo "开始编译打包1111"
                           sh "mvn clean package dockerfile:build"
+
+                          //vue项目打包  npm run build
+                          //前端构建docker build –t fontApp:v1.0
+                          //k8s启动yml文件
                           echo "上传镜像"
-                          sh "docker tag ${project_name}:latest 192.168.5.101:85/library/${project_name}:latest "
+                          sh "docker tag ${project_name}:latest 192.168.5.102:85/library/${project_name}:latest "
                           echo "镜像推送harbor"
                           //def harbor_auth="6d69019c-b8e6-49a8-8563-1f81f9da8050"
                           withCredentials([usernamePassword(credentialsId: '6d69019c-b8e6-49a8-8563-1f81f9da8050', passwordVariable: 'password', usernameVariable: 'username')]) {
                               // some block
                               //登录harbor
-                              sh " docker login -u ${username} -p ${password} 192.168.5.101:85  "
+                              sh " docker login -u ${username} -p ${password} 192.168.5.102:85  "
                               //镜像上传
-                              sh "docker push 192.168.5.101:85/library/${project_name}:latest"
+                              sh "docker push 192.168.5.102:85/library/${project_name}:latest"
                               sh  "echo 镜像上传成功"
                           }
                           //部署
@@ -51,7 +55,7 @@ pipeline {
              sshPublisher(publishers: [sshPublisherDesc(configName: '102_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh ${sever_port} ${project_name}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 
         }else{
-             sshPublisher(publishers: [sshPublisherDesc(configName: '102_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh ${sever_port} ${project_name}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+             (publishers: [sshPublisherDesc(configName: '102_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh ${sever_port} ${project_name}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
 
         }
