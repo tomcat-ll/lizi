@@ -6,7 +6,7 @@ pipeline {
     //仓库地址
      github='https://github.com/tomcat-ll/lizi.git'
     //jenkins远程服务器
-     server_name='103_server'
+     server_name='lilei-test'
     sever_port = '10000'}
     stages {
         stage(‘pipeline开始拉取‘) {
@@ -54,13 +54,14 @@ pipeline {
             /*  sshPublisher(publishers: [sshPublisherDesc(configName: "${server_name}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh ${sever_port} ${project_name}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
              sshPublisher(publishers: [sshPublisherDesc(configName: '102_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh ${sever_port} ${project_name}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
  */
-          withDockerContainer("192.168.5.101:85/library/lizi:latest"){
+        /*   withDockerContainer("192.168.5.101:85/library/lizi:latest"){
                                    sh "rancher  login https://192.168.5.104/v3 --token token-p8fcx:xfj49wkbg2p4lqtdl99kqr4b67gr45lg6jqgqb7cbskhvbzjx75rsf \
-                                           --skip-verify --context c-cs6ph:p-lndf4"
+                                           --skip-verify --context c-jkdqp:p-zbvs4"
                                   sh "rancher kubectl rollout restart deployment/lizi --namespace nginx"
-                              }
+                              } */
+         sshPublisher(publishers: [sshPublisherDesc(configName: "${server_name}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy2.sh ${project_name} ${sever_port} ${sever_port}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }else{
-             sshPublisher(publishers: [sshPublisherDesc(configName: '102_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy.sh ${sever_port} ${project_name}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+         sshPublisher(publishers: [sshPublisherDesc(configName: "${server_name}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy2.sh ${project_name} ${sever_port} ${sever_port}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
 
         }
