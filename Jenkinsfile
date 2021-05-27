@@ -6,7 +6,7 @@ pipeline {
     //仓库地址
      github='https://github.com/tomcat-ll/lizi.git'
     //jenkins远程服务器
-     server_name='lilei-test'
+     server_name='103_server'
     sever_port = '10000'}
     stages {
         stage(‘pipeline开始拉取‘) {
@@ -59,7 +59,7 @@ pipeline {
                                            --skip-verify --context c-jkdqp:p-zbvs4"
                                 sh "rancher kubectl rollout restart deployment/lizi --namespace nginx"
                               } */
-         sshPublisher(publishers: [sshPublisherDesc(configName: '103_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy2.sh ${project_name} ${sever_port}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+         sshPublisher(publishers: [sshPublisherDesc(configName: "${server_name}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy2.sh ${project_name} ${sever_port}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }else{
          sshPublisher(publishers: [sshPublisherDesc(configName: "${server_name}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/usr/local/jenkins/deploy2.sh ${project_name} ${sever_port} ${sever_port}", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
