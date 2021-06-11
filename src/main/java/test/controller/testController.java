@@ -32,7 +32,7 @@ public class testController {
     picservice p;
     @GetMapping(value = "/hi")
     public String getHi(){
-        return "hi----"+"devlop+1414141414";
+        return "hi----"+"devlop+15151515";
     }
 
     @ApiOperation(value = "图片上传222222")

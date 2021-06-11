@@ -1,5 +1,5 @@
 #FROM java:8
-FROM openjdk:8-jdk-alpine
+#FROM openjdk:8-jdk-alpine
 FROM apache/skywalking-java-agent:8.5.0-jdk8
 ARG JAR_FILE
 COPY ${JAR_FILE} /app.jar
