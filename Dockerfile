@@ -7,4 +7,4 @@ COPY ${JAR_FILE} /app.jar
 EXPOSE 10087
 #
 
-ENTRYPOINT ["java","-Dapp.id=svcbService","-javaagent:/opt/skywalking/agent/skywalking-agent.jar","-Dskywalking.agent.service_name=svcbService","-Dskywalking.collector.backend_service=192.168.5.103:32220","-jar","/app.jar"]
+ENTRYPOINT ["java","-javaagent:/opt/skywalking/agent/skywalking-agent.jar","-Dskywalking.collector.backend_service=skywalking-oap-server:11800","-jar","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
