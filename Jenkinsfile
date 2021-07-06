@@ -16,7 +16,7 @@ pipeline {
           deleteDir()  // clean up current work directory
           sh("ls -al ${env.WORKSPACE}")
                   echo "开始拉取"
-                 checkout([$class: 'GitSCM', branches: [[name: '*/'+env.BRANCH_NAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'b1ef8492-1493-4a99-bc34-128736e69203', url: "${github}"]]])
+                 checkout([$class: 'GitSCM', branches: [[name: '*/'+env.BRANCH_NAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'fd7b20ed-df28-4900-a850-dcc04d32fd73', url: "${github}"]]])
 
         }
         }
@@ -35,7 +35,7 @@ pipeline {
                           sh "docker tag ${project_name}:latest 192.168.5.101:85/library/${project_name}:latest "
                           echo "镜像推送harbor"
                           //def harbor_auth="6d69019c-b8e6-49a8-8563-1f81f9da8050"
-                          withCredentials([usernamePassword(credentialsId: '6d69019c-b8e6-49a8-8563-1f81f9da8050', passwordVariable: 'password', usernameVariable: 'username')]) {
+                          withCredentials([usernamePassword(credentialsId: '5bf4bd03-3e52-48fc-bebb-7a469e8cc9ea', passwordVariable: 'password', usernameVariable: 'username')]) {
                               // some block
                               //登录harbor
                               sh " docker login -u ${username} -p ${password} 192.168.5.101:85  "
